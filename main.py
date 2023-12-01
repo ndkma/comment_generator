@@ -7,6 +7,7 @@ together.api_key = "YOUR TOGETHER.AI API KEY HERE"
 def generate_comment():
     output_area.delete('1.0', tk.END)       # Clear the text box
 
+    # Create variables from objects on GUI
     student_name = student_name_field.get()
     writing = "Writing"
     writing_score = str(writing_scale.get())
@@ -41,23 +42,21 @@ def generate_comment():
     # Generates the comment with the following parameters
     output = together.Complete.create(
         prompt,
-        model = "togethercomputer/llama-2-13b-chat",
+        model = "togethercomputer/llama-2-13b-chat",        # Chat model to be used
         max_tokens = 250,                                   # Hard limit on length of comment
-        temperature = 0.5,                                  # Measure of creativity
-        top_k = 90,
+        temperature = 0.5,                                  # Measure of comment creativity
+        top_k = 90,                                         # Measure of comment diversity
         top_p = 0.8,
-        repetition_penalty = 1.1,
+        repetition_penalty = 1.1,                           # Slightly discourage repetition between comments
         stop = ['</s>']
     )
 
+    # Save final generated comment to variable
     complete_output = output['output']['choices'][0]['text']
     print(complete_output)
-    output_area.insert(tk.END, complete_output.strip())
 
-    # # Cut off the first part of the chatbot message which is usually irrelevant.
-    # short_output = complete_output.split(":")[1]
-    # print(short_output)
-    # output_area.insert(tk.END, short_output.strip())
+    # Display generated comment on text-box on GUI.
+    output_area.insert(tk.END, complete_output.strip())
 
 # Create base GUI
 master = Tk()
