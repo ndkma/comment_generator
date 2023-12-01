@@ -3,6 +3,7 @@ A comment generator that uses and AI LLM to generate comments for first grade ES
 student report cards, for Writing, Listening, Reading and Speaking.
 
 To use, get an API key from together.ai (You get enough free credits on sign-up)
+Make sure the together library is in your venv. 
 
 In main.py, paste your API key where it says "YOUR TOGETHER.AI API KEY HERE" in
 string format.
