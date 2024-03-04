@@ -11,8 +11,11 @@ Getting Started
 To use the comment generator, follow these steps:
 
 -Obtain an API key from Together.ai. Sign up on their platform to receive enough free credits.
+
 -On the comment generator interface, locate the input field and paste your API key.
+
 -Enter the student's name and adjust the scores on the provided sliders.
+
 -Click the "Generate Comment" button.
 
 The generator will utilize the API to produce comments based on the provided information. 
