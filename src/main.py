@@ -2,10 +2,12 @@ import together
 import tkinter as tk
 from tkinter import *
 
-together.api_key = "YOUR TOGETHER.AI API KEY HERE AS STRING"
-
+# ===================================
+# Handler function
+# ===================================
 def generate_comment() -> None:
     """
+    Grabs the together.ai api key from the input field.
     Grabs the following variables from the widgets on the GUI, and adds them to specific_prompt list:
 
     - Score between 0 - 10 from the Scales widgets (sliders); Writing, Speaking, Listening and Reading
@@ -36,6 +38,7 @@ def generate_comment() -> None:
     listening_score = str(listening_scale.get())
     reading = "Reading"
     reading_score = str(reading_scale.get())
+    together.api_key = str(api_key_field.get())
 
     # Provide background context for the LLM for generating responses
     context_prompt = (
@@ -59,16 +62,21 @@ def generate_comment() -> None:
         prompt += f"[INST]{specifics}[/INST]"
 
     # Generates the comment with the following parameters
-    output = together.Complete.create(
-        prompt,
-        model = "togethercomputer/llama-2-13b-chat",        # Chat model to be used
-        max_tokens = 250,                                   # Hard limit on length of comment
-        temperature = 0.5,                                  # Measure of comment creativity
-        top_k = 90,                                         # Measure of comment diversity
-        top_p = 0.8,
-        repetition_penalty = 1.1,                           # Slightly discourage repetition between comments
-        stop = ['</s>']
-    )
+    try:
+        output = together.Complete.create(
+            prompt,
+            model = "togethercomputer/llama-2-13b-chat",        # Chat model to be used
+            max_tokens = 250,                                   # Hard limit on length of comment
+            temperature = 0.5,                                  # Measure of comment creativity
+            top_k = 90,                                         # Measure of comment diversity
+            top_p = 0.8,
+            repetition_penalty = 1.1,                           # Slightly discourage repetition between comments
+            stop = ['</s>']
+        )
+    # Print error message if API call is failing    
+    except Exception as e:
+        complete_output = f"Error: {e}. \n\nPlease make sure your API key below is correct and valid."
+        output_area.insert(tk.END, complete_output.strip())
 
     # Save final generated comment to variable
     complete_output = output['output']['choices'][0]['text']
@@ -77,6 +85,9 @@ def generate_comment() -> None:
     # Display generated comment on text-box on GUI.
     output_area.insert(tk.END, complete_output.strip())
 
+# ===================================
+# Tkinter GUI
+# ===================================   
 # Create base GUI
 master = Tk()
 master.title("Report Card Comment Generator")
@@ -86,12 +97,17 @@ master.geometry("1170x590")
 student_name_field = Entry(master, font = 40, width = 25)
 student_name_field.place(x = 200, y = 25)
 
+# Create api key input field
+api_key_field = Entry(master, font = 40, width = 25)
+api_key_field.place(x = 200, y = 525)
+
 # Create static labels
 Label(master, text = "Student Name:", font = 40).place(x = 25, y = 25)
 Label(master, text = "Writing Score:", font = 40).place(x = 25, y = 125)
 Label(master, text = "Speaking Score:", font = 40).place(x = 25, y = 225)
 Label(master, text = "Listening Score:", font = 40).place(x = 25, y = 325)
 Label(master, text = "Reading Score:", font = 40).place(x = 25, y = 425)
+Label(master, text = "Together.ai API key:", font = 40).place(x = 25, y = 525)
 
 # Create scales for scoring
 writing_scale = Scale(master, from_ = 0, to = 10, orient = HORIZONTAL, length = 218)
