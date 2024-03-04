@@ -2,9 +2,28 @@ import together
 import tkinter as tk
 from tkinter import *
 
-together.api_key = "YOUR TOGETHER.AI API KEY HERE"
+together.api_key = "YOUR TOGETHER.AI API KEY HERE AS STRING"
 
-def generate_comment():
+def generate_comment() -> None:
+    """
+    Grabs the following variables from the widgets on the GUI, and adds them to specific_prompt list:
+
+    - Score between 0 - 10 from the Scales widgets (sliders); Writing, Speaking, Listening and Reading
+    - Student name from the Entry widget
+
+    The specific_prompt and context_prompt are then used in conjunction with the LLM to generate a comment.
+    The comment is then displayed on the output_area.
+
+    Called by Button btn_gen
+    
+    Parameters
+    ----------
+    None
+    
+    Returns
+    -------
+    None
+    """
     output_area.delete('1.0', tk.END)       # Clear the text box
 
     # Create variables from objects on GUI
@@ -85,11 +104,10 @@ reading_scale = Scale(master, from_ = 0, to = 10, orient = HORIZONTAL, length = 
 reading_scale.place(x = 200, y = 412)
 
 # Create button for generating comment, it calls generate_comment() function on click
-Button(master, text = "Generate Comment", width = 30, font = 80, command = generate_comment).place(x = 470, y = 225)
+btn_gen = Button(master, text = "Generate Comment", width = 25, font = 80, command = generate_comment).place(x = 470, y = 225)
 
 # Create text output area for the generated comment
 output_area = Text(master, height = 28, width = 40, wrap = WORD)
 output_area.place(x = 800, y = 25)
-
 
 master.mainloop()
