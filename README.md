@@ -20,3 +20,6 @@ To use the comment generator, follow these steps:
 
 The generator will utilize the API to produce comments based on the provided information. 
 The generated comments will be displayed in the output box, and can be copied and pasted.
+
+<img src="images/example1.png" alt="example of program"
+        width="520" height="330">
